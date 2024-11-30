@@ -1,5 +1,11 @@
 #include "grep.h"
 
+
+void red(){
+	printf("\033[0;31m");
+	return;
+}
+
 /* Initialises the linked list */
 void init(lineList *l) {
 	l -> head = NULL;
@@ -59,6 +65,7 @@ void append(lineList *l, char *line, int linenum, int len) {
  * key and prints the lines that contains
  * the key
  */
+
 void search(lineList *l, char *key) {
 	node *p = l -> head;
 	int i = 0, j = 0;
@@ -67,10 +74,11 @@ void search(lineList *l, char *key) {
 		j = 0;
 		while(p -> ptr[i]) {
 			if(key[j] == '\0') {
-				printLine(p);
+				printLine(p, key);
 				break;
 			}
 			if((p -> ptr[i]) == key[j]) {
+				
 				j++;
 			}
 			else if(j) {
@@ -83,35 +91,51 @@ void search(lineList *l, char *key) {
 	return;
 }
 
-/* Prints a line */
-void printLine(node *p) {
-	int i = 0;
-	while(p -> ptr[i]) {
-		putchar(p -> ptr[i++]);
-	}
-	return;
+void printLine(node *p, char *key) {
+    int i = 0, j = 0; 
+    int key_len = strlen(key);
+
+    while (p->ptr[i]) {
+        if (p->ptr[i] == key[j]) {
+            j++;
+          
+            if (j == key_len) {
+                printf("\033[31m"); 
+                for (int k = i - j + 1; k <= i; k++) {
+                    putchar(p->ptr[k]);
+                }
+                printf("\033[0m"); 
+                j = 0;
+            }
+        } else {
+       
+            if (j > 0) {
+                for (int k = i - j; k < i; k++) {
+                    putchar(p->ptr[k]);
+                }
+                j = 0; 
+            }
+            
+            putchar(p->ptr[i]);
+        }
+        i++;
+    }
+    if (j > 0) {
+        for (int k = i - j; k < i; k++) {
+            putchar(p->ptr[k]);
+        }
+    }
+
+    printf("\n"); 
 }
 
-/* Prints the contents of the file */
-void printFile(lineList *l) {
-	int i = 0;
-	char ch;
-	node *p = l -> head;
-	while(p) {
-		while(1) {
-			ch = p -> ptr[i++];
-			if(ch == '\0') {
-				i = 0;
-				break;
-			}
-			else if(ch == EOF) {
-				break;
-			}
-			else {
-				putchar(ch);
-			}
-		}
-		p = p -> next;
-	}
-	return;
+
+
+void printFile(lineList *l, char* key) {
+    node *p = l->head;
+    while (p) {
+        printLine(p, key);
+        p = p->next;
+    }
 }
+
