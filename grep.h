@@ -30,7 +30,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 typedef struct node {
 	char *ptr;
 	int linenum;
@@ -41,6 +40,10 @@ typedef struct lineList {
 	node *head;
 	node *tail;
 } lineList;
+
+void red(); // give red colour
+
+void reset();
 
 /* Initialises the linked list */
 void init(lineList *l);
@@ -58,7 +61,8 @@ void append(lineList *l, char *line, int linenum, int len);
 void search(lineList *l, char *key);
 
 /* Prints a line */
-void printLine(node *p);
+void printLine(node *p , char* key);
 
 /* Prints the contents of the file */
-void printFile(lineList *l);
+void printFile(lineList *l, char *key);
+
