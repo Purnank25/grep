@@ -39,6 +39,7 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <limits.h>
+#include <unistd.h>
 
 typedef struct node {
 	char *ptr;
@@ -53,9 +54,22 @@ typedef struct lineList {
 
 void red(); // give red colour
 
+void bold();
+
 void purple();
 
 void reset();
+
+void red();
+
+/* gives cyan colour */
+void cyan();
+
+/* gives purple colour */
+void purple();
+
+/* gives green colour */
+void green();
 
 /* Initialises the linked list */
 void init(lineList *l);
@@ -109,4 +123,79 @@ void search_in_directory(const char *dirpath, const char *pattern);
 void search_in_file(const char *filepath, const char *pattern);
 
 void highlight_pattern(const char *line, const char *pattern) ;
+
+int checkFileOrDirectory(char *path);
+
+
+void readDirectory(lineList *l, char *path);
+
+
+void readFileForRecursiveOption(lineList *l, char *path);
+
+/* For -q option */
+int qOption(lineList *l, char *path, char *key);
+
+/* Searches the linked list for the given
+ * key and returns 1 if the key is found
+ * and returns 0 if the key is not found
+ */
+int searchForQOption(lineList *l, char *key);
+
+/* For -H option */
+void hOption(lineList *l, char *key, char *filename);
+
+/* Searches the linked list for the given
+ * key and prints the lines that contains
+ * the key along with the filename
+ */
+void searchForHOption(lineList *l, char *key, char *filename);
+
+/* For -b option */
+void bOption(lineList *l, char *key, char *filename);
+
+/* Searches the linked list for the given
+ * key and prints the lines that contains
+ * the key along with the byte offset of
+ * each line
+ */
+void searchForbOption(lineList *l, char *key, char *filename);
+
+/* returns the byte offset of the line */
+int byteOffset(char *filename, int linenum);
+
+/* For -e option */
+void eOption(lineList *l, char *argv[], char *filename, int argc);
+
+/* Searches the linked list for the given
+ * key(s) from the arguments on the command
+ * line and prints the lines that contains
+ * the key(s)
+ */
+void searchForeOption(lineList *l, char *argv[], int argc);
+
+/* sorts an array using bubble sort */
+void bubbleSort(int *arr, int len);
+
+/* prints a line for -e option */
+void printLineForeOption(node *p, int indices[]);
+
+/* For -f option */
+void fOption(lineList *l, char *keys[], char *filename, char *patternsfile);
+
+/* reads patterns from file, 1 pattern will be read
+ * from each line and stored in an array of char
+ * pointers
+ */
+int readPatterns(char *keys[], char *patternsfile);
+
+/* Searches the linked list for the given
+ * key(s) and prints the lines that contains
+ * the key(s)
+ */
+void searchForfOption(lineList *l, char *keys[], int numkeys);
+
+/* prints a line for -f option */
+void printLineForfOption(node *p, int indices[]);
+
+
 
